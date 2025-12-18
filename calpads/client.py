@@ -303,6 +303,17 @@ class CALPADSClient:
         response = self.session.get(urljoin(self.host, f'/Student/{ssid}/SPED?format=JSON'))
         return safe_json_load(response)
 
+    def get_swds_history(self, ssid):
+        """Returns a JSON object with the Students with Disabilities Status (SWDS) history for the provided SSID
+        Args:
+            ssid (int, str): the 10 digit CALPADS Statewide Student Identifier
+        Returns:
+            a JSON object with a Data key and a total record count key (the name of this key can vary).
+            Expected data is under Data as a List where each item is a "row" of data
+        """
+        response = self.session.get(urljoin(self.host, f'/Student/{ssid}/SWDS?format=JSON'))
+        return safe_json_load(response)
+
     def get_ssrv_history(self, ssid):
         """Returns a JSON object with the Student Services (SSRV) history for the provided SSID
 
