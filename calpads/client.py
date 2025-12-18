@@ -291,7 +291,7 @@ class CALPADSClient:
         return safe_json_load(response)
 
     def get_sped_history(self, ssid):
-        """Returns a JSON object with the Special Education (SPED) history for the provided SSID
+        """Returns a JSON object with the Student Special Education Archive (SPED) history for the provided SSID
 
         Args:
             ssid (int, str): the 10 digit CALPADS Statewide Student Identifier
@@ -326,7 +326,7 @@ class CALPADSClient:
         return safe_json_load(response)
 
     def get_ssrv_history(self, ssid):
-        """Returns a JSON object with the Student Services (SSRV) history for the provided SSID
+        """Returns a JSON object with the Student Special Education Services Archive (SSRV) history for the provided SSID
 
         Args:
             ssid (int, str): the 10 digit CALPADS Statewide Student Identifier
