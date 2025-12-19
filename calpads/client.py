@@ -291,7 +291,7 @@ class CALPADSClient:
         return safe_json_load(response)
 
     def get_sped_history(self, ssid):
-        """Returns a JSON object with the Special Education (SPED) history for the provided SSID
+        """Returns a JSON object with the Student Special Education Archive (SPED) history for the provided SSID
 
         Args:
             ssid (int, str): the 10 digit CALPADS Statewide Student Identifier
@@ -303,8 +303,30 @@ class CALPADSClient:
         response = self.session.get(urljoin(self.host, f'/Student/{ssid}/SPED?format=JSON'))
         return safe_json_load(response)
 
+    def get_serv_history(self, ssid):
+        """Returns a JSON object with the Special Education Services (SERV) history for the provided SSID
+        Args:
+            ssid (int, str): the 10 digit CALPADS Statewide Student Identifier
+        Returns:
+            a JSON object with a Data key and a total record count key (the name of this key can vary).
+            Expected data is under Data as a List where each item is a "row" of data
+        """
+        response = self.session.get(urljoin(self.host, f'/Student/{ssid}/SERV?format=JSON'))
+        return safe_json_load(response)
+
+    def get_swds_history(self, ssid):
+        """Returns a JSON object with the Students with Disabilities Status (SWDS) history for the provided SSID
+        Args:
+            ssid (int, str): the 10 digit CALPADS Statewide Student Identifier
+        Returns:
+            a JSON object with a Data key and a total record count key (the name of this key can vary).
+            Expected data is under Data as a List where each item is a "row" of data
+        """
+        response = self.session.get(urljoin(self.host, f'/Student/{ssid}/SWDS?format=JSON'))
+        return safe_json_load(response)
+
     def get_ssrv_history(self, ssid):
-        """Returns a JSON object with the Student Services (SSRV) history for the provided SSID
+        """Returns a JSON object with the Student Special Education Services Archive (SSRV) history for the provided SSID
 
         Args:
             ssid (int, str): the 10 digit CALPADS Statewide Student Identifier
@@ -314,6 +336,17 @@ class CALPADSClient:
             Expected data is under Data as a List where each item is a "row" of data
         """
         response = self.session.get(urljoin(self.host, f'/Student/{ssid}/SSRV?format=JSON'))
+        return safe_json_load(response)
+
+    def get_meet_history(self, ssid):
+        """Returns a JSON object with the Special Education Meetings (MEET) history for the provided SSID
+        Args:
+            ssid (int, str): the 10 digit CALPADS Statewide Student Identifier
+        Returns:
+            a JSON object with a Data key and a total record count key (the name of this key can vary).
+            Expected data is under Data as a List where each item is a "row" of data
+        """
+        response = self.session.get(urljoin(self.host, f'/Student/{ssid}/MEET?format=JSON'))
         return safe_json_load(response)
 
     def get_psts_history(self, ssid):
@@ -327,6 +360,17 @@ class CALPADSClient:
             Expected data is under Data as a List where each item is a "row" of data
         """
         response = self.session.get(urljoin(self.host, f'/Student/{ssid}/PSTS?format=JSON'))
+        return safe_json_load(response)
+
+    def get_plan_history(self, ssid):
+        """Returns a JSON object with the Special Education Plans (PLAN) history for the provided SSID
+        Args:
+            ssid (int, str): the 10 digit CALPADS Statewide Student Identifier
+        Returns:
+            a JSON object with a Data key and a total record count key (the name of this key can vary).
+            Expected data is under Data as a List where each item is a "row" of data
+        """
+        response = self.session.get(urljoin(self.host, f'/Student/{ssid}/PLAN?format=JSON'))
         return safe_json_load(response)
 
     def get_requested_extracts(self, lea_code):
