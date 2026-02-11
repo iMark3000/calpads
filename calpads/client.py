@@ -96,7 +96,7 @@ class CALPADSClient:
             email (str): an email of the user to lookup
 
         Returns:
-            a dictionary with a Data key which lists the user's available organizations
+            a dictionary object with a Data key which lists the user's available organizations
         """
         self._select_lea(lea_code)
         response = self.session.get(urljoin(self.host, f"/GetUserOrgs/{email}?format=JSON"))
@@ -376,6 +376,21 @@ class CALPADSClient:
         """
         response = self.session.get(urljoin(self.host, f'/Student/{ssid}/PLAN?format=JSON'))
         return safe_json_load(response)
+
+    def get_plan_record_details(self, ssid, plan_key):
+        """Returns a dictionary with specific fields from a single Special Education Plans (PLAN) record
+        Args:
+            ssid (int, str): the 10 digit CALPADS Statewide Student Identifier
+            plan_key (int, str): the 7 digit PLAN record identifier
+        Returns:
+            a Dictionary with the General Educatiom Participation Percentage and Special Transport Indicator
+        """
+        self.session.get(urljoin(self.host, f'student/{ssid}/PLAN/{plan_key}'))
+        root = etree.fromstring(self.visit_history[-1].text, etree.HTMLParser())
+        return {
+            "GeneralEducationParticipationPercentage": self._get_input_value(root, "GeneralEducationParticipationPercentage"),
+            "SpecialTransportationIndicator": self._get_radio_value(root, "SpecialTransportationIndicator")
+        }
 
     def get_requested_extracts(self, lea_code):
         """Returns a dictionary object with the a list of extracts at the provided lea_code
@@ -922,6 +937,16 @@ class CALPADSClient:
                     if report_code == element.text.lower():
                         return urljoin(self.host, element.xpath('./../../a')[0].attrib['href'])
                 self.log.info("Failed to find the provided report code.")
+
+    def _get_input_value(self, root, input_id: str):
+        """Returns the value of an input element by its id"""
+        nodes = root.xpath(f"//input[@id='{input_id}']")
+        return nodes[0].get("value") if nodes else None
+    
+    def _get_radio_value(self, root, radio_name: str):
+        """Returns the value of the checked radio button by its name."""
+        nodes = root.xpath(f"//input[@type='radio' and @name='{radio_name}' and @checked]")
+        return nodes[0].get("value") if nodes else None
 
     def _handle_event_hooks(self, r, *args, **kwargs):
         """This hook is executed with every HTPP request, primarily used to handle instances of OAuth Dance."""
