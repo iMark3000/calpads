@@ -924,9 +924,9 @@ class CALPADSClient:
         """Fetch and return the URL associated with the report_code"""
         with self.session as session:
             if is_snapshot:
-                session.get('https://www.calpads.org/Report/Snapshot')
+                session.get('https://www.calpads.org/Report/Certification')
             else:
-                session.get('https://www.calpads.org/Report/ODS')
+                session.get('https://www.calpads.org/Report/Realtime')
             response = self.visit_history[-1]
             if report_code == '8.1eoy3' and is_snapshot:
                 return 'https://www.calpads.org/Report/Snapshot/8_1_StudentProfileList_EOY3_'
