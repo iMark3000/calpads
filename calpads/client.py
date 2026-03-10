@@ -14,26 +14,30 @@ from .files_upload_form import FilesUploadForm
 
 class CALPADSClient:
 
-    def __init__(self, username, password):
+    def __init__(self, username=None, password=None, session=None):
         self.host = "https://www.calpads.org/"
         self.username = username
         self.password = password
         self.credentials = {'Username': self.username,
                             'Password': self.password}
         self.visit_history = deque(maxlen=10)
-        self.session = requests.Session()
-        self.session.headers.update({'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 \
-        (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"})
+        if session is None:
+            self.session = requests.Session()
+            self.session.headers.update({'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 \
+            (KHTML, like Gecko) Chrome/70.0.3538.77 Safari/537.36"})
+        else:
+            self.session = session
         self.session.hooks['response'].append(self._handle_event_hooks)
 
         self.log = logging.getLogger(__name__)
         log_fmt = f'%(levelname)s: %(asctime)s {self.__class__.__name__}.%(funcName)s: %(message)s'
         logging.basicConfig(format=log_fmt, level=logging.INFO) # Use level=logging.INFO or level=logging.DEBUG
 
-        try:
-            self.__connection_status = self._login()
-        except RecursionError:
-            self.log.info("Looks like the provided credentials might be incorrect. Confirm credentials.")
+        if session is None:
+            try:
+                self.__connection_status = self._login()
+            except RecursionError:
+                self.log.info("Looks like the provided credentials might be incorrect. Confirm credentials.")
 
     def _login(self):
         """Login method which generally doesn't need to be called except when initializing the client."""
