@@ -383,7 +383,7 @@ class CALPADSClient:
             ssid (int, str): the 10 digit CALPADS Statewide Student Identifier
             plan_key (int, str): the 7 digit PLAN record identifier
         Returns:
-            a Dictionary with the General Educatiom Participation Percentage and Special Transport Indicator
+            a Dictionary with the General Education Participation Percentage and Special Transport Indicator
         """
         self.session.get(urljoin(self.host, f'student/{ssid}/PLAN/{plan_key}'))
         root = etree.fromstring(self.visit_history[-1].text, etree.HTMLParser())
